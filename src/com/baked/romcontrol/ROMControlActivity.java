@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -259,6 +263,25 @@ public class ROMControlActivity extends PreferenceActivity implements ButtonBarH
             Header header = target.get(i);
             // Ids are integers, so downcasting
             int id = (int) header.id;
+
+            if (id == R.id.launcher_settings) {
+                Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
+                launcherIntent.addCategory(Intent.CATEGORY_HOME);
+                launcherIntent.addCategory(Intent.CATEGORY_DEFAULT);
+
+                Intent launcherPreferencesIntent = new Intent(Intent.ACTION_MAIN);
+                launcherPreferencesIntent.addCategory("com.cyanogenmod.category.LAUNCHER_PREFERENCES");
+
+                ActivityInfo defaultLauncher = getPackageManager().resolveActivity(launcherIntent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo;
+                launcherPreferencesIntent.setPackage(defaultLauncher.packageName);
+                ResolveInfo launcherPreferences = getPackageManager().resolveActivity(launcherPreferencesIntent, 0);
+                if (launcherPreferences != null) {
+                    header.intent = new Intent().setClassName(launcherPreferences.activityInfo.packageName,
+                            launcherPreferences.activityInfo.name);
+                } else {
+                    target.remove(header);
+                }
+            } 
 
             // Increment if the current one wasn't removed by the Utils code.
             if (target.get(i) == header) {
