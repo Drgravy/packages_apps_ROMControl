@@ -281,7 +281,11 @@ public class ROMControlActivity extends PreferenceActivity implements ButtonBarH
                 } else {
                     target.remove(header);
                 }
-            } 
+            } else if (id == R.id.lockscreen_lock_clock) {
+                Intent launchPref = new Intent(Intent.ACTION_MAIN);
+                launchPref.setClassName("com.cyanogenmod.lockclock", "com.cyanogenmod.lockclock.preference.Preferences");
+                header.intent = launchPref;
+            }
 
             // Increment if the current one wasn't removed by the Utils code.
             if (target.get(i) == header) {

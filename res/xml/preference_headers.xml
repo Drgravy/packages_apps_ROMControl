@@ -85,6 +85,13 @@
         android:icon="@drawable/ic_baked_lock_settings"
         android:title="@string/header_lockscreen_extra_title" />
 
+    <!-- Lock clock -->
+    <header
+        android:id="@+id/lockscreen_lock_clock"
+        android:summary="@string/header_lock_clock_summary"
+        android:icon="@drawable/ic_baked_lock_settings"
+        android:title="@string/header_lock_clock_title" />
+
     <!-- Statusbar -->
     <header
         android:id="@+id/header_statusbar"
